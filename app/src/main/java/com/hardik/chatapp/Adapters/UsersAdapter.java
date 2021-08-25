@@ -1,9 +1,12 @@
 package com.hardik.chatapp.Adapters;
 
+import android.app.Dialog;
 import android.content.Intent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.Window;
+import android.view.WindowManager;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -60,6 +63,31 @@ public class UsersAdapter extends RecyclerView.Adapter<UsersAdapter.UserViewHold
             }
         }
         Glide.with(holder.profile.getContext()).load(data.get(position).getProfile_img()).into(holder.profile);
+        holder.profile.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                final Dialog dialog = new Dialog(holder.username.getContext());
+                dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
+                dialog.setContentView(R.layout.profile_dialog);
+                dialog.setCancelable(true);
+
+                WindowManager.LayoutParams lp = new WindowManager.LayoutParams();
+                lp.copyFrom(dialog.getWindow().getAttributes());
+                lp.width = WindowManager.LayoutParams.WRAP_CONTENT;
+                lp.height = WindowManager.LayoutParams.WRAP_CONTENT;
+
+                ((ImageView) dialog.findViewById(R.id.profile_dialog_close)).setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        dialog.dismiss();
+                    }
+                });
+                ((TextView) dialog.findViewById(R.id.profile_dialog_username)).setText(data.get(position).getUsername());
+                Glide.with(holder.profile.getContext()).load(data.get(position).getProfile_img()).into(((ImageView) dialog.findViewById(R.id.profile_dialog_image)));
+                dialog.show();
+                dialog.getWindow().setAttributes(lp);
+            }
+        });
         holder.itemView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {

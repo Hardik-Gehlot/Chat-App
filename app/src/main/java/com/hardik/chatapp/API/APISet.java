@@ -71,4 +71,12 @@ public interface APISet {
     Call<APIResponse> recover(
             @Field("email") String email
     );
+
+    @FormUrlEncoded
+    @POST("change_password.php")
+    Call<APIResponse> changePassword(
+            @Field("id") int id,
+            @Field("old_password") String oldPassword,
+            @Field("new_password") String newPassword
+    );
 }

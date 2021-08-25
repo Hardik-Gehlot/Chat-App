@@ -71,7 +71,7 @@ LinearLayout shimmer,network;
             isStop = false;
             getUsers();
         }else{
-            isStop = false;
+            isStop = true;
             Call<UsersResponse> call = APIController.getInstance().getApi().search(Session.getId(getApplicationContext()),query);
             call.enqueue(new Callback<UsersResponse>() {
                 @Override
@@ -101,6 +101,8 @@ LinearLayout shimmer,network;
                     finish();
                 }
                 break;
+            case R.id.setting:
+                startActivity(new Intent(MainActivity.this, SettingActivity.class));
         }
         return super.onOptionsItemSelected(item);
     }

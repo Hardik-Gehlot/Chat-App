@@ -75,7 +75,6 @@ ProgressBar progress;
                             send.setVisibility(View.GONE);
                             message.setText(response.body().getMessage());
                         }
-
                         @Override
                         public void onFailure(Call<APIResponse> call, Throwable t) {
                             progress.setVisibility(View.GONE);
@@ -92,5 +91,6 @@ ProgressBar progress;
         resend = findViewById(R.id.forgot_password_resend);
         message = findViewById(R.id.forgot_password_message);
         send = findViewById(R.id.forgot_password_button);
+        progress = findViewById(R.id.forgot_password_progress);
     }
 }

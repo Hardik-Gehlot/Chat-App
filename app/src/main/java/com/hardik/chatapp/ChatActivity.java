@@ -4,6 +4,9 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.content.Context;
+import android.media.AudioManager;
+import android.media.MediaPlayer;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.text.Editable;
@@ -45,6 +48,8 @@ LinearLayoutManager linearLayoutManager;
 int reciever,mid=0,badgeNumber=0;
 String name,profile;
 long last;
+MediaPlayer mMediaPlayer;
+AudioManager mAudioManager;
 ArrayList<Message> data;
 myThread t;
     @Override
@@ -61,6 +66,13 @@ myThread t;
         scrollToEnd();
         onScrollRecyclerView();
     }
+
+    private final MediaPlayer.OnCompletionListener mCompletionListener = new MediaPlayer.OnCompletionListener() {
+        @Override
+        public void onCompletion(MediaPlayer mp) {
+            releaseMediaPlayer();
+        }
+    };
 
     private void onScrollRecyclerView() {
         recyclerView.setOnScrollChangeListener(new View.OnScrollChangeListener() {
@@ -178,6 +190,32 @@ myThread t;
         name = getIntent().getStringExtra("username");
         profile = getIntent().getStringExtra("profile");
         last = getIntent().getLongExtra("lastSeen",0);
+        mAudioManager = (AudioManager) getApplicationContext().getSystemService(Context.AUDIO_SERVICE);
+    }
+
+    public ChatActivity() {
+    }
+
+    private AudioManager.OnAudioFocusChangeListener mOnAudioFocusChangeListener = new AudioManager.OnAudioFocusChangeListener() {
+        @Override
+        public void onAudioFocusChange(int focusChange) {
+            if (focusChange == AudioManager.AUDIOFOCUS_LOSS_TRANSIENT || focusChange == AudioManager.AUDIOFOCUS_LOSS_TRANSIENT_CAN_DUCK) {
+                mMediaPlayer.pause();
+                mMediaPlayer.seekTo(0);
+            } else if (focusChange == AudioManager.AUDIOFOCUS_GAIN) {
+                mMediaPlayer.start();
+            } else if (focusChange == AudioManager.AUDIOFOCUS_LOSS) {
+                releaseMediaPlayer();
+            }
+        }
+    };
+
+    private void releaseMediaPlayer() {
+        if(mMediaPlayer != null){
+            mMediaPlayer.release();
+        }
+        mMediaPlayer=null;
+        mAudioManager.abandonAudioFocus(mOnAudioFocusChangeListener);
     }
 
     class myThread extends Thread {
@@ -201,6 +239,13 @@ myThread t;
                                 data.add(m);
                                 mid = data.get(data.size() - 1).getMid();
                                 adapter.notifyItemInserted(data.size() - 1);
+                                releaseMediaPlayer();
+                                int res = mAudioManager.requestAudioFocus(mOnAudioFocusChangeListener, AudioManager.STREAM_MUSIC, AudioManager.AUDIOFOCUS_GAIN_TRANSIENT);
+                                if (res == AudioManager.AUDIOFOCUS_REQUEST_GRANTED) {
+                                    mMediaPlayer = MediaPlayer.create(getApplicationContext(), R.raw.message);
+                                    mMediaPlayer.start();
+                                    mMediaPlayer.setOnCompletionListener(mCompletionListener);
+                                }
                             }
                             int lastVisibleId = linearLayoutManager.findLastCompletelyVisibleItemPosition();
                             if(lastVisibleId == (data.size()-2)){
@@ -228,6 +273,7 @@ myThread t;
     @Override
     protected void onStop() {
         super.onStop();
+        releaseMediaPlayer();
     }
     @Override
     protected void onDestroy() {

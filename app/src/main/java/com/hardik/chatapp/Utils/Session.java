@@ -54,4 +54,25 @@ public class Session {
         }
         return sharedPreferences.getInt("id",0);
     }
+    public static String getProfile(Context context){
+        if(sharedPreferences == null) {
+            sharedPreferences = context.getSharedPreferences(SHARED_PREFERENCE_NAME, Context.MODE_PRIVATE);
+            editor = sharedPreferences.edit();
+        }
+        return sharedPreferences.getString("profile_img","https://chatapp-hardik.000webhostapp.com/img/avatar.png");
+    }
+    public static String getUsername(Context context){
+        if(sharedPreferences == null) {
+            sharedPreferences = context.getSharedPreferences(SHARED_PREFERENCE_NAME, Context.MODE_PRIVATE);
+            editor = sharedPreferences.edit();
+        }
+        return sharedPreferences.getString("username","");
+    }
+    public static String getEmail(Context context){
+        if(sharedPreferences == null) {
+            sharedPreferences = context.getSharedPreferences(SHARED_PREFERENCE_NAME, Context.MODE_PRIVATE);
+            editor = sharedPreferences.edit();
+        }
+        return sharedPreferences.getString("email","");
+    }
 }

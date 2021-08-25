@@ -14,7 +14,19 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.ChatApp"
         android:usesCleartextTraffic="true">
-        <activity android:name=".ForgotPassword"></activity>
+        <activity
+            android:name=".Settings.Wallpaper"
+            android:exported="true" />
+        <activity
+            android:name=".Settings.ChangePassword"
+            android:exported="true" />
+        <activity
+            android:name=".Settings.EditProfile"
+            android:exported="true" />
+        <activity
+            android:name=".SettingActivity"
+            android:exported="true" />
+        <activity android:name=".ForgotPassword" />
         <activity android:name=".ChatActivity" />
         <activity android:name=".Login" />
         <activity android:name=".SignIn">

@@ -1,23 +1,17 @@
 package com.hardik.chatapp;
 
-import androidx.activity.result.ActivityResult;
 import androidx.activity.result.ActivityResultCallback;
 import androidx.activity.result.ActivityResultLauncher;
-import androidx.activity.result.contract.ActivityResultContract;
 import androidx.activity.result.contract.ActivityResultContracts;
-import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.Manifest;
-import android.app.Activity;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.net.Uri;
 import android.os.Bundle;
 import android.provider.MediaStore;
-import android.provider.SyncStateContract;
 import android.util.Base64;
-import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -28,7 +22,6 @@ import android.widget.Toast;
 import com.hardik.chatapp.API.APIController;
 import com.hardik.chatapp.Models.APIResponse;
 import com.hardik.chatapp.Models.User;
-import com.hardik.chatapp.Utils.Constant;
 import com.hardik.chatapp.Utils.Session;
 import com.karumi.dexter.Dexter;
 import com.karumi.dexter.PermissionToken;

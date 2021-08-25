@@ -17,7 +17,7 @@
                 android:layout_width="150dp"
                 android:layout_height="150dp"
                 android:layout_marginTop="10dp"
-                android:src="@drawable/ic_baseline_account_circle_24"
+                android:src="@drawable/avatar"
                 app:layout_constraintEnd_toEndOf="@+id/signin_fname"
                 app:layout_constraintStart_toStartOf="@+id/signin_fname"
                 app:layout_constraintTop_toTopOf="parent" />
